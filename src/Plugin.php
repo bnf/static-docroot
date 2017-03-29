@@ -94,8 +94,8 @@ $setenv = function ($name, $value = null) {
 // release, although a new one is available) and prevents using files
 // from different releases during one request.
 
-$setenv('DOCUMENT_ROOT', $basedir . $webdir);
-$setenv('SCRIPT_FILENAME', $basedir . $webdir . $_SERVER['SCRIPT_NAME']);
+$setenv('DOCUMENT_ROOT', $basedir . '/' . $webdir);
+$setenv('SCRIPT_FILENAME', $basedir . '/' . $webdir . $_SERVER['SCRIPT_NAME']);
 
 unset($setenv);
 unset($basedir);
