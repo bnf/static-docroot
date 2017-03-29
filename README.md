@@ -8,6 +8,10 @@ That is to ensure that they are static and stable. That means we want their
 destination to not change during one request. That would happen when they
 contain symlinks which may change during one request due to a deployment.
 
+```
+  composer require bnf/static-docroot
+```
+
 The behavior of this plugin can be influenced by configuration in the `extra`
 section of the root `composer.json`
 
