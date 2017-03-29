@@ -1,0 +1,31 @@
+{
+    "name": "bnf/static-docroot",
+    "type": "composer-plugin",
+    "license": "MIT",
+    "description": "Composer plugin that ensures DOCUMENT_ROOT is static and stable during one request, intended for symlink based deployments.",
+    "keywords": [
+        "docroot", "symlink", "composer", "plugin"
+    ],
+    "homepage": "https://github.com/bnf/static-docroot",
+    "authors": [
+        {
+            "name": "Benjamin Franzke",
+            "email": "benjaminfranzke@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bnf\\StaticDocroot\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.5.0",
+        "composer-plugin-api": "^1.1"
+    },
+    "require-dev": {
+        "composer/composer": "^1.0"
+    },
+    "extra": {
+        "class": "Bnf\\StaticDocroot\\Plugin"
+    }
+}
