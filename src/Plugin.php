@@ -33,7 +33,14 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $filesystem = new FileSystem();
 
         $filepath = $this->composer->getConfig()->get('vendor-dir') . '/bnf/static-docroot-include.php';
-        $contents = sprintf($this->getFileTemplate(), $this->getWebDir());
+
+        $rootPathCode = $filesystem->findShortestPathCode(
+            dirname($filepath),
+            $this->getBaseDir() . '/' . $this->getWebDir(),
+            true
+        );
+
+        $contents = sprintf($this->getFileTemplate(), $rootPathCode);
 
         if (@file_put_contents($filepath, $contents, 0664) !== false) {
             $rootPackage = $this->composer->getPackage();
@@ -61,6 +68,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         return 'web';
     }
 
+    protected function getBaseDir()
+    {
+        $config = $this->composer->getConfig();
+
+        $reflectionClass = new \ReflectionClass($config);
+        $reflectionProperty = $reflectionClass->getProperty('baseDir');
+        $reflectionProperty->setAccessible(true);
+
+        return $reflectionProperty->getValue($config);
+    }
+
     private function getFileTemplate()
     {
         $fileTemplate = <<<'PHP'
@@ -70,9 +88,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
  * statically render the realpath of the DOCUMENT_ROOT to prevent realpath cache
  */
 
-/* TODO: Add support for nested vendor dir (e.g. vendor-dir = 'contrib/composer') */
-$basedir = dirname(dirname(__DIR__));
-$webdir = '%s';
+$root = %s;
 
 $setenv = function ($name, $value = null) {
     // If PHP is running as an Apache module and an existing
@@ -94,12 +110,11 @@ $setenv = function ($name, $value = null) {
 // release, although a new one is available) and prevents using files
 // from different releases during one request.
 
-$setenv('DOCUMENT_ROOT', $basedir . '/' . $webdir);
-$setenv('SCRIPT_FILENAME', $basedir . '/' . $webdir . $_SERVER['SCRIPT_NAME']);
+$setenv('DOCUMENT_ROOT', $root);
+$setenv('SCRIPT_FILENAME', $root . $_SERVER['SCRIPT_NAME']);
 
 unset($setenv);
-unset($basedir);
-unset($webdir);
+unset($root);
 
 PHP;
         return $fileTemplate;
