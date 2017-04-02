@@ -110,8 +110,12 @@ $setenv = function ($name, $value = null) {
 // release, although a new one is available) and prevents using files
 // from different releases during one request.
 
-$setenv('DOCUMENT_ROOT', $root);
-$setenv('SCRIPT_FILENAME', $root . $_SERVER['SCRIPT_NAME']);
+if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] !== '') {
+    $setenv('DOCUMENT_ROOT', $root);
+    if (substr($_SERVER['SCRIPT_FILENAME'], 0, length($_SERVER['DOCUMENT_ROOT'])) === $_SERVER['DOCUMENT_ROOT']) {
+        $setenv('SCRIPT_FILENAME', $root . $_SERVER['SCRIPT_NAME']);
+    }
+}
 
 unset($setenv);
 unset($root);
