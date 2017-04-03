@@ -24,7 +24,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         return array(
             ScriptEvents::PRE_AUTOLOAD_DUMP  => 'addIncludeFile',
-
         );
     }
 
@@ -121,6 +120,7 @@ unset($setenv);
 unset($root);
 
 PHP;
+
         return $fileTemplate;
     }
 }
