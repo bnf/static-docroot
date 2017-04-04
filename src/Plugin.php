@@ -110,10 +110,10 @@ $setenv = function ($name, $value = null) {
 // from different releases during one request.
 
 if (isset($_SERVER['DOCUMENT_ROOT']) && $_SERVER['DOCUMENT_ROOT'] !== '') {
-    $setenv('DOCUMENT_ROOT', $root);
     if (substr($_SERVER['SCRIPT_FILENAME'], 0, strlen($_SERVER['DOCUMENT_ROOT'])) === $_SERVER['DOCUMENT_ROOT']) {
         $setenv('SCRIPT_FILENAME', $root . $_SERVER['SCRIPT_NAME']);
     }
+    $setenv('DOCUMENT_ROOT', $root);
 }
 
 unset($setenv);
