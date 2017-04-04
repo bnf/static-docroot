@@ -38,3 +38,11 @@ you do not need to add the `bnf/static-docroot` section.
       }
   }
 ```
+
+Note for TYPO3 8.7: This package is not needed as of TYPO3 8.7 LTS.
+https://review.typo3.org/#/c/52295/ fixed TYPO3 to base
+path calculations on `__DIR__` and thus does effectively the
+same as this package.
+You might still need this package if you have a (bad) extension
+that uses `$_SERVER['DOCUMENT_ROOT']` instead of
+`GeneralUtility::getIndpEnv()`.
